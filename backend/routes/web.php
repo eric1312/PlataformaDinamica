@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController; // Importación correcta
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SystemController;
+
 
 // Rutas de autenticación
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -21,3 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::get('/settings', [SettingsController::class, 'index']);
 });
+
+// Ruta para obtener los sistemas del usuario autenticado
+Route::middleware('auth:sanctum')->get('/user-systems', [SystemController::class, 'getUserSystems']);

@@ -1,12 +1,18 @@
 import axios from 'axios'; // Asegúrate de tener axios instalado
 
+const instance = axios.create({
+    baseURL: '/api',
+    timeout: 1000,
+    headers: { 'X-Custom-Header': 'foobar' }
+});
+
 // Configura la URL base de tu API backend
 const API_URL = 'http://tu-backend-laravel.test/api';
 
 class AuthService {
     // Método para iniciar sesión
     login(user) {
-        return axios
+        return instance
             .post(`${API_URL}/login`, {
                 email: user.email,
                 password: user.password,
@@ -27,7 +33,7 @@ class AuthService {
 
     // Método para registrarse
     register(user) {
-        return axios.post(`${API_URL}/register`, {
+        return instance.post(`${API_URL}/register`, {
             name: user.name,
             email: user.email,
             password: user.password,
@@ -41,4 +47,6 @@ class AuthService {
     }
 }
 
-export default new AuthService(); // Exporta una instancia del servicio
+const authServiceInstance = new AuthService(); // Asigna la instancia a una variable
+
+export default authServiceInstance; // Exporta la instancia del servicio
