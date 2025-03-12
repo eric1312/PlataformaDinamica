@@ -5,41 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Notifications\Notifiable; // Agregar esta línea
 
 class AuthController extends Controller
 {
-    // Método para mostrar el formulario de login
-    public function showLoginForm()
-    {
-        return view('auth.login');
-    }
-
-    // Método para manejar el login
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
+            return response()->json(['token' => $token, 'user' => $user]);
         }
 
-        return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
-        ]);
+        return response()->json(['error' => 'Credenciales inválidas'], 401);
     }
 
-    // Método para mostrar el formulario de registro
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    // Método para manejar el registro
     public function register(Request $request)
     {
         $request->validate([
@@ -51,22 +33,28 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
         ]);
 
-        Auth::login($user);
+        $token = $user->createToken('authToken')->plainTextToken;
 
-        return redirect()->route('dashboard');
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 
-    // Método para manejar el logout
     public function logout(Request $request)
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/');
+        $request->user()->tokens()->delete();
+        return response()->json(['message' => 'Sesión cerrada']);
     }
+}
+
+namespace App\Models;
+
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
+{
+    use Notifiable, HasApiTokens;
 }
