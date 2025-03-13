@@ -26,3 +26,14 @@ src/
 ├── App.js
 └── index.js
 
+Laravel:
+
+    Creaste APIs para gestionar usuarios, sistemas y sus relaciones.
+
+    Implementaste métodos para asignar y remover sistemas de usuarios.
+
+React:
+
+    Creaste un panel de administración que consume las APIs de Laravel.
+
+    Implementaste una interfaz para asignar y remover sistemas de usuarios.

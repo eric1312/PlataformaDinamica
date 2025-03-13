@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController; // Importación correcta
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemController;
+use App\Http\Controllers\AdminController;
 
 
 // Rutas de autenticación
@@ -26,3 +27,10 @@ Route::middleware('auth')->group(function () {
 
 // Ruta para obtener los sistemas del usuario autenticado
 Route::middleware('auth:sanctum')->get('/user-systems', [SystemController::class, 'getUserSystems']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'getUsers']);
+    Route::get('/admin/systems', [AdminController::class, 'getSystems']);
+    Route::post('/admin/assign-system', [AdminController::class, 'assignSystemToUser']);
+    Route::post('/admin/remove-system', [AdminController::class, 'removeSystemFromUser']);
+});
