@@ -1,4 +1,4 @@
-# PlataformaDinamica Para iniciar con tu plataforma, te recomiendo seguir estos pasos estructurados:
+# Plataforma Dinamica Para iniciar con tu plataforma, te recomiendo seguir estos pasos estructurados:
 
 1. Definir la Arquitectura y Requisitos
     

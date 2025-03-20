@@ -8,17 +8,17 @@ use App\Models\System;
 class AdminController extends Controller
 {
     // Obtener todos los usuarios
-    public function getUsers()
+    public function getUsers()  // Cambiar a getUsuarios
     {
-        $users = User::all();
-        return response()->json(['users' => $users]);
+        $users = User::all(); // Cambiar a $usuarios
+        return response()->json(['users' => $users]); // Cambiar a ['usuarios' => $usuarios]
     }
 
     // Obtener todos los sistemas
-    public function getSystems()
+    public function getSystems()    // Cambiar a getSistemas
     {
-        $systems = System::all();
-        return response()->json(['systems' => $systems]);
+        $systems = System::all();   // Cambiar a $sistemas
+        return response()->json(['systems' => $systems]);   // Cambiar a ['sistemas' => $sistemas]
     }
 
     // Asignar un sistema a un usuario

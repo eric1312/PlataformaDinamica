@@ -16,7 +16,11 @@ class User extends Authenticatable {
 
     public function systems() {
         return $this->belongsToMany(System::class);
-        return $this->hasMany(System::class);
+    }
+
+    // Agregar el método isAdmin
+    public function isAdmin() {
+        return $this->role === 'admin';
     }
 }
 

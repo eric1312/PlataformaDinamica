@@ -34,3 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/assign-system', [AdminController::class, 'assignSystemToUser']);
     Route::post('/admin/remove-system', [AdminController::class, 'removeSystemFromUser']);
 });
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/admin/settings', [AdminController::class, 'settings']);
+});
